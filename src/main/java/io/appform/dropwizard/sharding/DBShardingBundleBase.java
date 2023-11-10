@@ -155,7 +155,7 @@ public abstract class DBShardingBundleBase<T extends Configuration> implements C
                 shardInfoProvider,
                 blacklistingStore,
                 shardManager);
-        IntStream.range(0, numShards).forEach(
+        IntStream.range(0, shardCount()).forEach(
                 shard -> shardBundles.add(new HibernateBundle<T>(inEntities, new SessionFactoryFactory()) {
                     @Override
                     protected String name() {
@@ -262,6 +262,10 @@ public abstract class DBShardingBundleBase<T extends Configuration> implements C
 
     protected boolean enableMultiMaster() {
         return false;
+    }
+
+    protected int shardCount() {
+        return numShards;
     }
 
     protected Supplier<MetricConfig> getMetricConfig(T config) {
